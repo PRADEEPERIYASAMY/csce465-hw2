@@ -119,7 +119,7 @@ the most likely mutation points.
 - Claude's first test suite did **not** adequately test role binding.  Its
   reflection test used different RSA key pairs, so removing the role byte from
   `sign()` still passed because the wrong peer key already blocked the
-  handshake.  I added `test_role_binding_shared_identity_key` in
+  handshake.  I added `test_reflection_with_shared_identity_key_rejected` in
   `test_handshake.py` to catch this: two parties sharing one RSA key can still
   be distinguished only by the role string.
 - Claude tagged the IV onto the wire (16 extra bytes per record).  The
@@ -129,8 +129,6 @@ the most likely mutation points.
   (`header || iv || ciphertext`).
 - I added the `MAX_PLAINTEXT` cap (16 MiB) and the `SequenceExhausted` guard
   myself; Claude's draft had no upper-bound on either.
-- Added `test_trailing_bytes_rejected` in `test_handshake.py` to verify
-  that trailing bytes after a well-formed message are rejected.
 
 **CTR counter-block overlap (documented, not fixed):**
 The assignment's IV layout (`session_id[8] || seq[8]`) means consecutive
@@ -147,12 +145,11 @@ I kept the wire format as specified and documented the limitation in the report.
 **What I tested:**
 - `python -m pytest -v` -> 49 passed, 0 failed (Python 3.12.3,
   cryptography 49.0.0, pytest 9.1.1).
-- Disabled the sequence check by patching `state.seq` back to 0 after the
-  first receive (in a scratch Python session, not in the committed test file)
-  -> 3 replay/reorder tests raised `SequenceExhausted` or accepted replays;
-  restored with `git checkout`.
-- Disabled signature verification (used `if False:` around the `verify()`
-  call) -> 7 authentication tests failed; restored.
+- Sequence check mutation: changed `if seq != state.seq:` to `if False:` in
+  `open_record` → 3 replay/reorder tests failed as expected; restored with
+  `git checkout`.
+- Signature mutation: replaced the `verify(…ROLE_NODE…)` call with `pass` →
+  7 authentication tests failed; restored.
 - Verified one record independently with OpenSSL:
   `openssl enc -aes-256-ctr -d -nosalt -K <k_enc_hex> -iv <iv_hex>` matched
   the Python plaintext, and the HMAC-SHA-256 tag recomputed with

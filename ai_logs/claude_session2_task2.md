@@ -115,7 +115,7 @@ message can craft subtly different byte strings that parse identically, which
 could be exploited in certain contexts (length-extension-style confusion).  It
 provided the fix: after the parsing loop, if `i != len(data)` raise
 `MalformedMessage("trailing bytes")`.  I added this and a corresponding
-test `test_trailing_bytes`.
+test `test_trailing_bytes_rejected`.
 
 ---
 

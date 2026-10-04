@@ -51,24 +51,23 @@ record.
 
 #### What I used
 
--   The suggested log structure for the assignment.
--   The explanation that AI records should accurately reflect real
-    assistance.
+-   The structure it suggested for organizing the log (real prompts + response
+    summaries, grouped by session).
+-   The clarification that I should not submit a simulated conversation as if
+    it were real.
 
 #### What I changed or rejected
 
--   The sample dialogue below is clearly marked as illustrative and is
-    not claimed as an actual exchange.
--   No implementation code or homework answers are claimed as completed.
+-   ChatGPT produced a simulated sample AES-CTR conversation.  I did not
+    include it anywhere because it never happened.
+-   The draft `AI_USAGE.md` and `chatgpt_log.md` it generated were not used
+    as content — I rewrote both.
 
 #### How I tested it
 
--   No source code was executed.
--   No test results or cryptographic outputs were produced or verified.
+-   Nothing to test; no code came from this session.
 
-#### Error, limitation, or concern
+#### Limitation
 
--   The record of actual exchanges includes concise response summaries
-    rather than a full verbatim export of every assistant response. Keep
-    or attach the original conversation export if the course requires
-    complete responses.
+-   The ChatGPT responses above are paraphrased, not copied verbatim.  I
+    didn't save the full chat before closing the tab.

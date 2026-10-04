@@ -105,12 +105,11 @@ removed, because the wrong key would fail first.
 > key pair so that the only distinguishing factor is the role string.
 
 **Claude's response (summary):**
-Claude acknowledged the gap and provided `test_role_binding_shared_identity_key`:
+Claude acknowledged the gap and provided `test_reflection_with_shared_identity_key_rejected`:
 creates a gateway and node that share one RSA identity key, runs the handshake
-(which succeeds because roles are included), then manually calls
-`sign(key, b"", th)` (empty role) and `verify(pub, bad_sig, b"node", th)`
-to confirm rejection.  This test now fails if the role byte is removed from
-`sign()`.
+(which succeeds because roles are included), then reflects the node's own HS2
+signature back as the HS3 signature.  The node rejects it (`BadSignature` on
+"gateway") — which would not happen if the role byte were absent from `sign()`.
 
 ---
 
