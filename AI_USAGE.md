@@ -119,9 +119,11 @@ the most likely mutation points.
 - Claude's first test suite did **not** adequately test role binding.  Its
   reflection test used different RSA key pairs, so removing the role byte from
   `sign()` still passed because the wrong peer key already blocked the
-  handshake.  I added `test_reflection_with_shared_identity_key_rejected` in
-  `test_handshake.py` to catch this: two parties sharing one RSA key can still
-  be distinguished only by the role string.
+  handshake.  I spotted the gap and asked Claude to write a test where gateway
+  and node share the same RSA identity key — that way only the role string
+  distinguishes the two signatures.  Claude produced
+  `test_reflection_with_shared_identity_key_rejected`; I verified locally that
+  it fails when the role byte is removed from `sign()`.
 - Claude tagged the IV onto the wire (16 extra bytes per record).  The
   assignment says the IV is implicit (`session_id || seq`, both sides rebuild
   it), so I removed it from the wire format and confirmed the MAC still covers
