@@ -1,0 +1,13 @@
+# 2026-10-04 17:57:47 UTC | pradeep@pradeep | /home/pradeep/csce465-agentsec/hw2
+$ env
+
+Python 3.12.3
+OpenSSL 3.0.13 30 Jan 2024 (Library: OpenSSL 3.0.13 30 Jan 2024)
+Name: cryptography
+Version: 49.0.0
+Name: pytest
+Version: 9.1.1
+
+$ openssl dhparam -in ffdhe3072.pem -text -noout | head -3
+    DH Parameters: (3072 bit)
+    GROUP: ffdhe3072

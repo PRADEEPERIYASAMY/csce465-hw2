@@ -1,0 +1,25 @@
+# 2026-10-04 17:57:47 UTC | pradeep@pradeep | /home/pradeep/csce465-agentsec/hw2
+$ python baseline_ctr.py
+
+=== Task 1: AES-256-CTR without a MAC ===
+plaintext P      : {"action":"READ","path":"notes.txt"}
+nonce            : 1310681192393f53fe15e3695aa3e49a
+ciphertext C     : bda586da62db96d9d42e522eaa73138af21d4fc39b1a0f547b5a7fcf62315382594eb42e
+
+--- Attack 1: bit flip by relay (key never used) ---
+offset of action : 11
+modified C'      : bda586da62db96d9d42e522ba662128af21d4fc39b1a0f547b5a7fcf62315382594eb42e
+receiver got     : {"action":"WIPE","path":"notes.txt"}
+
+XOR relation on the action bytes (C xor C' == P xor P'):
+  C [11:15]   = 2eaa7313
+  C'[11:15]   = 2ba66212
+  C xor C'        = 050c1101
+  P xor P'        = 050c1101   ('READ' xor 'WIPE')
+  full-length check C xor C' == P xor P' : True
+  bytes outside the action unchanged     : True
+
+--- Attack 2: replay of the original ciphertext ---
+  processed #1: {"action":"READ","path":"notes.txt"}
+  processed #2: {"action":"READ","path":"notes.txt"}
+receiver executed the same command 2 times

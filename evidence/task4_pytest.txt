@@ -1,0 +1,60 @@
+# 2026-10-04 17:57:50 UTC | pradeep@pradeep | /home/pradeep/csce465-agentsec/hw2
+$ python -m pytest -v
+
+============================= test session starts ==============================
+platform linux -- Python 3.12.3, pytest-9.1.1, pluggy-1.6.0 -- /home/pradeep/csce465-agentsec/.venv/bin/python
+cachedir: .pytest_cache
+rootdir: /home/pradeep/csce465-agentsec/hw2
+collecting ... collected 49 items
+
+tests/test_baseline.py::test_bitflip_changes_action_without_key PASSED   [  2%]
+tests/test_baseline.py::test_replay_is_processed_twice PASSED            [  4%]
+tests/test_handshake.py::test_valid_handshake_both_sides_agree PASSED    [  6%]
+tests/test_handshake.py::test_every_session_uses_fresh_dh_and_nonces PASSED [  8%]
+tests/test_handshake.py::test_kdf_matches_assignment_spec_independently PASSED [ 10%]
+tests/test_handshake.py::test_values_are_384_byte_left_padded PASSED     [ 12%]
+tests/test_handshake.py::test_transcript_is_length_prefixed_and_unambiguous PASSED [ 14%]
+tests/test_handshake.py::test_incorrect_rsa_public_key_rejected PASSED   [ 16%]
+tests/test_handshake.py::test_invalid_pss_signature_rejected PASSED      [ 18%]
+tests/test_handshake.py::test_mitm_with_own_rsa_key_rejected PASSED      [ 20%]
+tests/test_handshake.py::test_changed_nonce_rejected[HS1-3] PASSED       [ 22%]
+tests/test_handshake.py::test_changed_nonce_rejected[HS2-3] PASSED       [ 24%]
+tests/test_handshake.py::test_changed_dh_public_value_rejected[HS1] PASSED [ 26%]
+tests/test_handshake.py::test_changed_dh_public_value_rejected[HS2] PASSED [ 28%]
+tests/test_handshake.py::test_degenerate_dh_public_value_rejected[0] PASSED [ 30%]
+tests/test_handshake.py::test_degenerate_dh_public_value_rejected[1] PASSED [ 32%]
+tests/test_handshake.py::test_degenerate_dh_public_value_rejected[p-1] PASSED [ 34%]
+tests/test_handshake.py::test_degenerate_dh_public_value_rejected[p] PASSED [ 36%]
+tests/test_handshake.py::test_unexpected_peer_identity_rejected PASSED   [ 38%]
+tests/test_handshake.py::test_reflected_signature_rejected_by_role_binding PASSED [ 40%]
+tests/test_handshake.py::test_reflection_with_shared_identity_key_rejected PASSED [ 42%]
+tests/test_handshake.py::test_reflected_dh_value_and_nonce_rejected PASSED [ 44%]
+tests/test_handshake.py::test_reflected_hs1_back_to_gateway_rejected PASSED [ 46%]
+tests/test_handshake.py::test_transcript_with_bad_declared_length_rejected_before_hashing PASSED [ 48%]
+tests/test_handshake.py::test_truncated_handshake_message_rejected[1] PASSED [ 51%]
+tests/test_handshake.py::test_truncated_handshake_message_rejected[3] PASSED [ 53%]
+tests/test_handshake.py::test_truncated_handshake_message_rejected[50] PASSED [ 55%]
+tests/test_handshake.py::test_trailing_bytes_rejected PASSED             [ 57%]
+tests/test_handshake.py::test_out_of_order_message_rejected PASSED       [ 59%]
+tests/test_record.py::test_valid_handshake_and_bidirectional_messages PASSED [ 61%]
+tests/test_record.py::test_empty_plaintext_roundtrip PASSED              [ 63%]
+tests/test_record.py::test_wire_format_matches_spec PASSED               [ 65%]
+tests/test_record.py::test_modified_ciphertext_rejected PASSED           [ 67%]
+tests/test_record.py::test_task1_bitflip_attack_rejected PASSED          [ 69%]
+tests/test_record.py::test_modified_tag_rejected PASSED                  [ 71%]
+tests/test_record.py::test_modified_message_type_rejected PASSED         [ 73%]
+tests/test_record.py::test_modified_version_rejected PASSED              [ 75%]
+tests/test_record.py::test_modified_length_field_rejected PASSED         [ 77%]
+tests/test_record.py::test_modified_sequence_field_rejected PASSED       [ 79%]
+tests/test_record.py::test_truncated_record_rejected PASSED              [ 81%]
+tests/test_record.py::test_replayed_record_rejected PASSED               [ 83%]
+tests/test_record.py::test_reordered_or_dropped_record_rejected PASSED   [ 85%]
+tests/test_record.py::test_record_from_other_session_rejected PASSED     [ 87%]
+tests/test_record.py::test_reflected_record_rejected PASSED              [ 89%]
+tests/test_record.py::test_reflected_record_with_rewritten_direction_rejected PASSED [ 91%]
+tests/test_record.py::test_verify_before_decrypt_and_no_plaintext_on_error PASSED [ 93%]
+tests/test_record.py::test_ivs_unique_and_sequence_never_wraps PASSED    [ 95%]
+tests/test_record.py::test_states_cannot_be_swapped PASSED               [ 97%]
+tests/test_record.py::test_spec_iv_layout_counter_overlap_is_documented PASSED [100%]
+
+============================== 49 passed in 1.03s ==============================

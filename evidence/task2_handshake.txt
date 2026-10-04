@@ -1,0 +1,14 @@
+# 2026-10-04 17:57:47 UTC | pradeep@pradeep | /home/pradeep/csce465-agentsec/hw2
+$ python handshake.py
+
+=== Task 2: authenticated ffdhe3072 handshake ===
+group: ffdhe3072, p bits = 3072, g = 2
+  HS1: 429 bytes on the wire
+  HS2: 814 bytes on the wire
+  HS3: 395 bytes on the wire
+gateway state=established, node state=established
+TH         = ea065d8262c897558c1c6db412d0b9a6296fa0e6d4c3ca145370c49501be028a
+session_id = b7c8222554234070
+both sides derived identical keys: True
+4 traffic keys pairwise distinct : True
+second session (same RSA keys) -> new session_id 92532c3381539dae, keys differ: True

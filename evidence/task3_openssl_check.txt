@@ -1,0 +1,10 @@
+# 2026-10-04 17:57:49 UTC | pradeep@pradeep | /home/pradeep/csce465-agentsec/hw2
+$ inspect_record.py + openssl
+
+header      = 010100000000000000002000000024
+  version=01 direction=01 seq=0000000000000000 type=20 ct_len=00000024
+iv          = 80fa7663890c51530000000000000000  (session_id || seq)
+openssl decrypt -> {"action":"READ","path":"notes.txt"}
+openssl HMAC    = d4616cf82d0b79d9ba6b60def8562c8fff0fb8c116d34ddb4b3be308e1000112
+record tag      = d4616cf82d0b79d9ba6b60def8562c8fff0fb8c116d34ddb4b3be308e1000112
+MATCH: tag verified independently

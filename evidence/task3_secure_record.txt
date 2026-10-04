@@ -1,0 +1,11 @@
+# 2026-10-04 17:57:49 UTC | pradeep@pradeep | /home/pradeep/csce465-agentsec/hw2
+$ python secure_record.py
+
+=== Task 3: encrypt-then-MAC record layer ===
+G->N record #0: 83 bytes, header=010100000000000000002000000024
+  node opened : (32, b'{"action":"READ","path":"notes.txt"}')
+N->G record #0: 73 bytes, header=01020000000000000000210000001a
+  gateway opened: (33, b'{"ok":true,"data":"hello"}')
+  replay G->N #0: rejected -> ReplayOrReorder: got sequence 0, expected 1
+  reflect N->G record back to node: rejected -> WrongDirection: got direction 2, expected 1
+  Task-1 bit-flip on protected record: rejected -> BadMAC
