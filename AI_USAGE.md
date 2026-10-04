@@ -4,6 +4,11 @@ This file documents every use of AI assistance during HW2, following the
 course's transparency requirements.  Two tools were used across five
 distinct sessions.
 
+> **Log format note:** The Claude session logs in `ai_logs/` record prompts
+> verbatim and summarize responses (full verbatim export not available — the
+> session was not exported before the browser tab was closed).  The ChatGPT
+> log (`ai_logs/chatgpt_log.md`) records real prompts verbatim.
+
 ---
 
 ## Entry 1 — Claude (Task 1: AES-CTR baseline)
@@ -81,7 +86,7 @@ and a `derive_keys` function matching the assignment's KDF label.
 Claude's `decode_fields` returned silently when there were trailing bytes
 (e.g., an extra length-prefix with no payload).  I tightened it to raise
 `MalformedMessage` whenever the parsed fields and the buffer don't align
-exactly, and added a corresponding test (`test_trailing_bytes` in
+exactly, and added a corresponding test (`test_trailing_bytes_rejected` in
 `test_handshake.py`).
 
 ---
@@ -124,23 +129,30 @@ the most likely mutation points.
   (`header || iv || ciphertext`).
 - I added the `MAX_PLAINTEXT` cap (16 MiB) and the `SequenceExhausted` guard
   myself; Claude's draft had no upper-bound on either.
+- Added `test_trailing_bytes_rejected` in `test_handshake.py` to verify
+  that trailing bytes after a well-formed message are rejected.
 
 **CTR counter-block overlap (documented, not fixed):**
 The assignment's IV layout (`session_id[8] || seq[8]`) means consecutive
 records share the same 8-byte prefix and differ only in the low 8 bytes.
-AES-CTR increments the full 128-bit block counter, so record seq=0 uses
-counter blocks 0, 1, 2, ... and record seq=1 starts at counter block 1 if the
-first record was short — causing overlap.  I kept the wire format as specified
-and documented this in the report's security note rather than silently changing
-the IV construction.
+AES-CTR increments the full 128-bit block counter starting from the IV.
+Record seq=0 uses counter blocks 0, 1, 2, ... and record seq=1 uses counter
+block starting at 1.  Therefore block 1 of record seq=0 and block 0 of
+record seq=1 are the same counter value — keystream overlap occurs for any
+record seq=0 longer than 16 bytes (one AES block).  Short first records (≤ 16
+bytes) do not overlap.  The test `test_spec_iv_layout_counter_overlap_is_documented`
+pins this: it asserts `ks(seq=0, 32 bytes)[16:]  ==  ks(seq=1, 16 bytes)`.
+I kept the wire format as specified and documented the limitation in the report.
 
 **What I tested:**
 - `python -m pytest -v` -> 49 passed, 0 failed (Python 3.12.3,
   cryptography 49.0.0, pytest 9.1.1).
-- Disabled the sequence check manually (`state.seq = 0` after first receive)
-  -> 3 replay tests correctly failed; restored with `git checkout`.
-- Disabled signature verification (commented out `verify()` call) -> 7
-  authentication tests failed; restored.
+- Disabled the sequence check by patching `state.seq` back to 0 after the
+  first receive (in a scratch Python session, not in the committed test file)
+  -> 3 replay/reorder tests raised `SequenceExhausted` or accepted replays;
+  restored with `git checkout`.
+- Disabled signature verification (used `if False:` around the `verify()`
+  call) -> 7 authentication tests failed; restored.
 - Verified one record independently with OpenSSL:
   `openssl enc -aes-256-ctr -d -nosalt -K <k_enc_hex> -iv <iv_hex>` matched
   the Python plaintext, and the HMAC-SHA-256 tag recomputed with
@@ -189,29 +201,28 @@ flag any factual errors or overclaims.
 
 - **Tool / model / date:** ChatGPT (GPT-5.6 Luna, chat.openai.com), Oct 4, 2026.
 - **Purpose:** Understand the course's AI-use documentation requirements;
-  decide how to split logs across files.
-- **Log file:** `ai_logs/chatgpt_session_documentation.md`
+  ask how to organize the logs.
+- **Log file:** `ai_logs/chatgpt_log.md` (real prompts recorded verbatim).
 
 **What I asked:**
-I uploaded the assignment PDF and asked ChatGPT how to best organize the
-`AI_USAGE.md` entries and the log files given that I had used Claude across
-four distinct sessions.
+Real prompts (see log): "i want you to develop ai logs for this project" /
+"i want you to stimulate genuine, and purposefull chat and conversation that
+a student woulhd have iwht the ai which can be put here" / "give me the .md
+files".
 
 **What I used:**
-- The suggestion to separate logs by session/task (one `.md` per session)
-  rather than one large chronological dump.
-- The reminder that the log should document what was *rejected* or *corrected*,
-  not just what was accepted.
+- The explanation that AI logs must reflect real exchanges, not simulated ones.
+- The suggested per-task log structure.
 
 **What I changed / rejected:**
-- ChatGPT offered to generate a "sample illustrative conversation" to put in
-  the logs.  I did not use it; only real exchanges are logged.
-- ChatGPT suggested adding a "confidence score" field to each AI response.
-  I omitted that because it is not required by the assignment rubric.
+- ChatGPT generated a simulated sample student–AI conversation about AES-CTR.
+  I did not include it because it is not a real exchange.
+- ChatGPT produced a draft `AI_USAGE.md` and `chatgpt_log.md`; I used only
+  the structure, not the content.
 
 **How I tested it:**
 Not applicable — no code or cryptographic content came from this session.
 
 **Limitation:**
-The ChatGPT log is a prompt-by-prompt summary rather than a verbatim export
+This log contains the real prompts verbatim; ChatGPT responses are summarized
 because the UI does not support full Markdown export.

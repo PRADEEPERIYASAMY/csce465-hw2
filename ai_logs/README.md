@@ -9,18 +9,15 @@ AI session used during CSCE 465/765 Homework 2.
 | `claude_session2_task2.md` | Claude | Oct 2–3, 2026 | Task 2: ffdhe3072 DH handshake |
 | `claude_session3_task3_task4.md` | Claude | Oct 3, 2026 | Task 3: record layer; Task 4: tests |
 | `claude_session4_report.md` | Claude | Oct 4, 2026 | Report review & LaTeX corrections |
-| `chatgpt_session_documentation.md` | ChatGPT | Oct 4, 2026 | AI-use log structure |
+| `chatgpt_log.md` | ChatGPT | Oct 4, 2026 | AI-use log structure (real prompts verbatim) |
 
 ## Format
 
-Each log file includes:
-- **My prompt** — quoted verbatim
-- **AI response (summary)** — key points from the response; full verbatim
-  output not reproduced due to length
-- **What I changed / rejected** — specific edits made relative to the AI draft
+**Claude logs:** Prompts are recorded verbatim.  Responses are summarized
+(full verbatim export not available — the session was not exported before the
+browser tab was closed).  Each log ends with a "What was rejected" section.
 
-Prompts in the Claude sessions were accompanied by code snippets and assignment
-excerpts; those are paraphrased where they are redundant with the submitted
-source files.
+**ChatGPT log (`chatgpt_log.md`):** Real prompts are quoted verbatim.
+Responses are summarized.
 
 Personal account details (email, full name) have been redacted from all logs.
